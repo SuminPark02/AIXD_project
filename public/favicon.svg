@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#2563eb"/>
+  
+  <!-- Briefcase icon -->
+  <path d="M160 144h192v48H160v-48zm0 96h192v48H160v-48zm0 96h192v48H160v-48z" fill="white"/>
+  
+  <!-- AI circuit pattern -->
+  <path d="M256 96v320M96 256h320" stroke="white" stroke-width="8" stroke-dasharray="16 16"/>
+</svg> 
