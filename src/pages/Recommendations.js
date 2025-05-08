@@ -16,7 +16,8 @@ import {
   LinearProgress,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
+  Divider
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -28,6 +29,7 @@ import {
   Bookmark as BookmarkIcon,
   BookmarkBorder as BookmarkBorderIcon,
   Info as InfoIcon,
+  Business as BusinessIcon,
 } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { jobService } from '../services/jobService';
@@ -138,9 +140,17 @@ const Recommendations = () => {
               >
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                    <Typography variant="h6" component="h2" gutterBottom>
-                      {job.title}
-                    </Typography>
+                    <Box>
+                      <Typography variant="h5" component="h2" gutterBottom>
+                        {job.title}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                        <BusinessIcon color="primary" fontSize="small" />
+                        <Typography variant="subtitle1" color="primary">
+                          {job.company}
+                        </Typography>
+                      </Box>
+                    </Box>
                     <Box>
                       <Tooltip title={favorites.includes(job.id) ? "Remove from favorites" : "Add to favorites"}>
                         <IconButton onClick={() => toggleFavorite(job.id)} size="small">
@@ -155,22 +165,25 @@ const Recommendations = () => {
                     </Box>
                   </Box>
 
-                  <Typography variant="subtitle1" color="primary" gutterBottom>
-                    {job.company}
-                  </Typography>
-
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                    <LocationIcon color="action" fontSize="small" />
-                    <Typography variant="body2" color="text.secondary">
-                      {job.location}
-                    </Typography>
-                  </Box>
-
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                    <MoneyIcon color="action" fontSize="small" />
-                    <Typography variant="body2" color="text.secondary">
-                      {job.salary}
-                    </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <LocationIcon color="action" fontSize="small" />
+                      <Typography variant="body2" color="text.secondary">
+                        {job.location}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <MoneyIcon color="action" fontSize="small" />
+                      <Typography variant="body2" color="text.secondary">
+                        {job.salary}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Rating value={job.rating} precision={0.5} readOnly size="small" />
+                      <Typography variant="body2" color="text.secondary">
+                        ({job.rating})
+                      </Typography>
+                    </Box>
                   </Box>
 
                   <Typography variant="body2" color="text.secondary" paragraph>
@@ -191,17 +204,7 @@ const Recommendations = () => {
                     ))}
                   </Box>
 
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Rating
-                      value={job.rating}
-                      precision={0.5}
-                      readOnly
-                      size="small"
-                    />
-                    <Typography variant="body2" color="text.secondary">
-                      ({job.rating})
-                    </Typography>
-                  </Box>
+                  <Divider sx={{ my: 2 }} />
 
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
