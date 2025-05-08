@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -10,8 +10,21 @@ import {
   Grid,
   Chip,
   Divider,
-  LinearProgress
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Paper,
+  Rating
 } from '@mui/material';
+import {
+  Work as WorkIcon,
+  LocationOn as LocationIcon,
+  AttachMoney as MoneyIcon,
+  Star as StarIcon,
+  Business as CompanyIcon
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/ProfileContext';
 
@@ -148,129 +161,160 @@ const calculateMatchScore = (job, profile) => {
 function JobRecommendations() {
   const navigate = useNavigate();
   const { profile } = useProfile();
+  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState([]);
 
   // Redirect to profile if no profile data
-  React.useEffect(() => {
+  useEffect(() => {
     if (!profile) {
       navigate('/profile');
     }
   }, [profile, navigate]);
 
   // Filter and sort jobs based on AI matching score
-  const recommendedJobs = React.useMemo(() => {
-    if (!profile) return [];
-
-    return jobListings
-      .map(job => ({
-        ...job,
-        matchScore: calculateMatchScore(job, profile)
-      }))
-      .filter(job => job.matchScore > 0)
-      .sort((a, b) => b.matchScore - a.matchScore);
+  useEffect(() => {
+    if (profile) {
+      const recommendedJobs = jobListings
+        .map(job => ({
+          ...job,
+          matchScore: calculateMatchScore(job, profile)
+        }))
+        .filter(job => job.matchScore > 0)
+        .sort((a, b) => b.matchScore - a.matchScore);
+      setJobs(recommendedJobs);
+      setLoading(false);
+    }
   }, [profile]);
 
   if (!profile) {
     return null;
   }
 
+  if (loading) {
+    return (
+      <Container>
+        <Box sx={{ mt: 4 }}>
+          <LinearProgress />
+          <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
+            Finding the best matches for you...
+          </Typography>
+        </Box>
+      </Container>
+    );
+  }
+
   return (
     <Container maxWidth="lg">
-      <Box sx={{ mt: 4 }}>
+      <Box sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          AI-Powered Job Recommendations
+          Recommended Jobs
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" paragraph>
-          Jobs recommended for {profile.name} based on AI matching
+          Jobs are sorted by how well they match your profile
         </Typography>
 
-        {recommendedJobs.length === 0 ? (
-          <Typography variant="h6" color="text.secondary" align="center" sx={{ mt: 4 }}>
-            No jobs found matching your profile. Try updating your skills or preferences.
-          </Typography>
-        ) : (
-          <Grid container spacing={3}>
-            {recommendedJobs.map((job) => (
-              <Grid key={job.id} xs={12} md={6}>
-                <Card sx={{ height: '100%' }}>
-                  <CardContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                      <Typography variant="h5" component="h2">
-                        {job.title}
-                      </Typography>
-                      <Chip
-                        label={`${job.matchScore}% Match`}
-                        color={job.matchScore > 70 ? "success" : job.matchScore > 40 ? "warning" : "error"}
-                      />
-                    </Box>
-                    <Typography variant="h6" color="primary" gutterBottom>
-                      {job.company}
-                    </Typography>
-                    
-                    <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                      <Typography variant="body1">
-                        📍 {job.location}
-                      </Typography>
-                      <Typography variant="body1">
-                        💰 {job.salary}
-                      </Typography>
-                    </Box>
-
-                    <Typography variant="body1" paragraph>
-                      {job.description}
-                    </Typography>
-
-                    <Divider sx={{ my: 2 }} />
-
-                    <Typography variant="subtitle1" gutterBottom>
-                      Required Skills
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-                      {job.requirements.map((req, index) => (
-                        <Chip
-                          key={index}
-                          label={req}
+        <List>
+          {jobs.map((job, index) => (
+            <React.Fragment key={job.id}>
+              <Paper 
+                elevation={2} 
+                sx={{ 
+                  mb: 2,
+                  transition: 'transform 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 4
+                  }
+                }}
+              >
+                <ListItem alignItems="flex-start">
+                  <ListItemIcon>
+                    <WorkIcon color="primary" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant="h6" component="div">
+                          {job.title}
+                        </Typography>
+                        <Chip 
+                          label={`${job.matchScore}% Match`}
                           color="primary"
-                          variant="outlined"
+                          size="small"
                         />
-                      ))}
-                    </Box>
-
-                    <Typography variant="subtitle1" gutterBottom>
-                      Benefits
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                      {job.benefits.map((benefit, index) => (
-                        <Chip
-                          key={index}
-                          label={benefit}
-                          color="secondary"
-                          variant="outlined"
-                        />
-                      ))}
-                    </Box>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary">
-                      View Details
-                    </Button>
-                    <Button size="small" color="primary">
-                      Apply
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-
-        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-          <Button
-            variant="outlined"
-            onClick={() => navigate('/profile')}
-          >
-            Edit Profile
-          </Button>
-        </Box>
+                      </Box>
+                    }
+                    secondary={
+                      <Box sx={{ mt: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                          <CompanyIcon fontSize="small" color="action" />
+                          <Typography variant="body2" color="text.secondary">
+                            {job.company}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                          <LocationIcon fontSize="small" color="action" />
+                          <Typography variant="body2" color="text.secondary">
+                            {job.location}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                          <MoneyIcon fontSize="small" color="action" />
+                          <Typography variant="body2" color="text.secondary">
+                            {job.salary}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ mt: 2 }}>
+                          <Typography variant="body2" color="text.secondary" gutterBottom>
+                            Requirements:
+                          </Typography>
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {job.requirements.map((req, idx) => (
+                              <Chip
+                                key={idx}
+                                label={req}
+                                size="small"
+                                variant="outlined"
+                              />
+                            ))}
+                          </Box>
+                        </Box>
+                        <Box sx={{ mt: 2 }}>
+                          <Typography variant="body2" color="text.secondary" gutterBottom>
+                            Benefits:
+                          </Typography>
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {job.benefits.map((benefit, idx) => (
+                              <Chip
+                                key={idx}
+                                label={benefit}
+                                size="small"
+                                color="success"
+                                variant="outlined"
+                              />
+                            ))}
+                          </Box>
+                        </Box>
+                        <Typography variant="body2" sx={{ mt: 2 }}>
+                          {job.description}
+                        </Typography>
+                      </Box>
+                    }
+                  />
+                </ListItem>
+              </Paper>
+              {index < jobs.length - 1 && <Divider />}
+            </React.Fragment>
+          ))}
+        </List>
+      </Box>
+      <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant="outlined"
+          onClick={() => navigate('/profile')}
+        >
+          Edit Profile
+        </Button>
       </Box>
     </Container>
   );
