@@ -146,16 +146,20 @@ const Profile = () => {
                 />
               )}
               renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip
-                    label={option}
-                    {...getTagProps({ index })}
-                    sx={{
-                      background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                      color: 'white',
-                    }}
-                  />
-                ))
+                value.map((option, index) => {
+                  const { key, ...chipProps } = getTagProps({ index });
+                  return (
+                    <Chip
+                      key={key}
+                      label={option}
+                      {...chipProps}
+                      sx={{
+                        background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+                        color: 'white',
+                      }}
+                    />
+                  );
+                })
               }
             />
 
