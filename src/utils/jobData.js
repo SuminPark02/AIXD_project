@@ -8,10 +8,10 @@ export const processJobData = (rawData) => {
     title: job.title,
     company: job.company,
     location: job.location,
-    salary: formatSalary(job.salary),
+    salary: job.salary,
     description: job.description,
-    skills: extractSkills(job.description),
-    rating: calculateJobRating(job),
+    skills: job.skills,
+    rating: job.rating,
   }));
 };
 
@@ -74,11 +74,13 @@ export const sortJobs = (jobs, sortBy) => {
   return [...jobs].sort((a, b) => {
     switch (sortBy) {
       case 'salary':
-        return b.salary - a.salary;
+        const salaryA = parseInt(a.salary.replace(/[^0-9]/g, ''));
+        const salaryB = parseInt(b.salary.replace(/[^0-9]/g, ''));
+        return salaryB - salaryA;
       case 'rating':
         return b.rating - a.rating;
       case 'relevance':
-        return b.rating * 0.7 + b.salary * 0.3 - (a.rating * 0.7 + a.salary * 0.3);
+        return b.matchScore - a.matchScore;
       default:
         return 0;
     }
