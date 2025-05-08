@@ -44,7 +44,7 @@ const experienceLevels = [
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { profile, updateProfile } = useProfile();
+  const { profile, updateProfile, clearProfile } = useProfile();
   const [formData, setFormData] = useState({
     name: profile?.name || '',
     skills: profile?.skills || [],
@@ -55,8 +55,22 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.name || !formData.experience) {
+      return;
+    }
     updateProfile(formData);
     navigate('/recommendations');
+  };
+
+  const handleReset = () => {
+    clearProfile();
+    setFormData({
+      name: '',
+      skills: [],
+      experience: 'Mid Level',
+      preferredLocation: '',
+      minSalary: 50000,
+    });
   };
 
   return (
@@ -75,22 +89,38 @@ const Profile = () => {
             border: '1px solid rgba(255, 255, 255, 0.2)',
           }}
         >
-          <Typography 
-            variant="h4" 
-            component="h1" 
-            gutterBottom
-            sx={{
-              background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-              backgroundClip: 'text',
-              textFillColor: 'transparent',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textAlign: 'center',
-              mb: 4
-            }}
-          >
-            Create Your Profile
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+            <Typography 
+              variant="h4" 
+              component="h1" 
+              sx={{
+                background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+                backgroundClip: 'text',
+                textFillColor: 'transparent',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Create Your Profile
+            </Typography>
+            {profile && (
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={handleReset}
+                sx={{
+                  borderColor: '#ef4444',
+                  color: '#ef4444',
+                  '&:hover': {
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(239, 68, 68, 0.04)',
+                  },
+                }}
+              >
+                Reset Profile
+              </Button>
+            )}
+          </Box>
 
           <form onSubmit={handleSubmit}>
             <TextField
@@ -112,7 +142,7 @@ const Profile = () => {
                   {...params}
                   label="Skills"
                   margin="normal"
-                  required
+                  helperText="Select your skills (optional)"
                 />
               )}
               renderTags={(value, getTagProps) =>
@@ -154,7 +184,7 @@ const Profile = () => {
                   {...params}
                   label="Preferred Location"
                   margin="normal"
-                  required
+                  helperText="Select your preferred location (optional)"
                 />
               )}
             />
@@ -174,23 +204,24 @@ const Profile = () => {
               />
             </Box>
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              size="large"
-              sx={{
-                mt: 3,
-                background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                color: 'white',
-                py: 1.5,
-                '&:hover': {
-                  background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
-                }
-              }}
-            >
-              Get Recommendations
-            </Button>
+            <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                size="large"
+                sx={{
+                  background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+                  color: 'white',
+                  py: 1.5,
+                  '&:hover': {
+                    background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
+                  }
+                }}
+              >
+                {profile ? 'Update Profile' : 'Create Profile'}
+              </Button>
+            </Box>
           </form>
         </Paper>
       </Container>
