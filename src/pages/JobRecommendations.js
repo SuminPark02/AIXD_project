@@ -74,7 +74,7 @@ function JobRecommendations() {
 
         <Grid container spacing={3}>
           {recommendedJobs.map((job) => (
-            <Grid key={job.id} xs={12} md={6}>
+            <Grid key={job.id} columns={{ xs: 12, md: 6 }}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <Typography variant="h5" component="h2" gutterBottom>
