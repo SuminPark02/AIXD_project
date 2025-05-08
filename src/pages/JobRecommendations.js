@@ -11,7 +11,8 @@ import {
   Chip,
   Divider
 } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useProfile } from '../contexts/ProfileContext';
 
 // 임시 구직 공고 데이터
 const jobListings = [
@@ -48,33 +49,50 @@ const jobListings = [
 ];
 
 function JobRecommendations() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { userData } = location.state || {};
+  const { profile } = useProfile();
 
-  // 사용자 데이터가 없으면 프로필 페이지로 리다이렉트
+  // Redirect to profile if no profile data
   React.useEffect(() => {
-    if (!userData) {
+    if (!profile) {
       navigate('/profile');
     }
-  }, [userData, navigate]);
+  }, [profile, navigate]);
 
-  // 실제로는 여기서 API를 호출하여 사용자 데이터 기반으로 구직 공고를 필터링하고 정렬합니다
-  const recommendedJobs = jobListings;
+  // Filter and sort jobs based on profile
+  const recommendedJobs = jobListings.filter(job => {
+    if (!profile) return false;
+    
+    // Match skills
+    const hasMatchingSkills = profile.skills?.length > 0 
+      ? job.requirements.some(req => profile.skills.includes(req))
+      : true;
+
+    // Match location if specified
+    const locationMatch = !profile.preferredLocation 
+      ? true 
+      : job.location.includes(profile.preferredLocation);
+
+    return hasMatchingSkills && locationMatch;
+  });
+
+  if (!profile) {
+    return null;
+  }
 
   return (
     <Container maxWidth="lg">
       <Box sx={{ mt: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          맞춤 구직 공고
+          Recommended Jobs
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" paragraph>
-          {userData?.name}님의 프로필을 기반으로 추천된 구직 공고입니다.
+          Jobs recommended based on {profile.name}'s profile
         </Typography>
 
         <Grid container spacing={3}>
           {recommendedJobs.map((job) => (
-            <Grid key={job.id} columns={{ xs: 12, md: 6 }}>
+            <Grid key={job.id} xs={12} md={6}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <Typography variant="h5" component="h2" gutterBottom>
@@ -100,7 +118,7 @@ function JobRecommendations() {
                   <Divider sx={{ my: 2 }} />
 
                   <Typography variant="subtitle1" gutterBottom>
-                    필요 역량
+                    Required Skills
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
                     {job.requirements.map((req, index) => (
@@ -114,7 +132,7 @@ function JobRecommendations() {
                   </Box>
 
                   <Typography variant="subtitle1" gutterBottom>
-                    복리후생
+                    Benefits
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {job.benefits.map((benefit, index) => (
@@ -129,10 +147,10 @@ function JobRecommendations() {
                 </CardContent>
                 <CardActions>
                   <Button size="small" color="primary">
-                    상세 정보 보기
+                    View Details
                   </Button>
                   <Button size="small" color="primary">
-                    지원하기
+                    Apply
                   </Button>
                 </CardActions>
               </Card>
@@ -145,7 +163,7 @@ function JobRecommendations() {
             variant="outlined"
             onClick={() => navigate('/profile')}
           >
-            프로필 수정하기
+            Edit Profile
           </Button>
         </Box>
       </Box>
