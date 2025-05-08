@@ -221,25 +221,35 @@ function JobRecommendations() {
                 sx={{ 
                   mb: 2,
                   transition: 'transform 0.2s',
+                  background: 'linear-gradient(145deg, #ffffff 0%, #fff0f5 100%)',
+                  border: '1px solid #FFB6C1',
                   '&:hover': {
                     transform: 'translateY(-4px)',
-                    boxShadow: 4
+                    boxShadow: '0 8px 16px rgba(255, 105, 180, 0.2)',
+                    background: 'linear-gradient(145deg, #fff0f5 0%, #ffffff 100%)',
                   }
                 }}
               >
                 <ListItem alignItems="flex-start">
                   <ListItemIcon>
-                    <WorkIcon color="primary" />
+                    <WorkIcon sx={{ color: '#FF69B4' }} />
                   </ListItemIcon>
                   <ListItemText
                     primary={
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h6" component="div" sx={{ color: '#C71585' }}>
                           {job.title}
                         </Typography>
                         <Chip 
                           label={`${job.matchScore}% Match`}
-                          color="primary"
+                          sx={{
+                            backgroundColor: '#FFB6C1',
+                            color: '#FFFFFF',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                              backgroundColor: '#FF69B4',
+                            }
+                          }}
                           size="small"
                         />
                       </Box>
@@ -247,25 +257,25 @@ function JobRecommendations() {
                     secondary={
                       <Box sx={{ mt: 1 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                          <CompanyIcon fontSize="small" color="action" />
-                          <Typography variant="body2" color="text.secondary">
+                          <CompanyIcon fontSize="small" sx={{ color: '#FF69B4' }} />
+                          <Typography variant="body2" sx={{ color: '#DB7093' }}>
                             {job.company}
                           </Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                          <LocationIcon fontSize="small" color="action" />
-                          <Typography variant="body2" color="text.secondary">
+                          <LocationIcon fontSize="small" sx={{ color: '#FF69B4' }} />
+                          <Typography variant="body2" sx={{ color: '#DB7093' }}>
                             {job.location}
                           </Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                          <MoneyIcon fontSize="small" color="action" />
-                          <Typography variant="body2" color="text.secondary">
+                          <MoneyIcon fontSize="small" sx={{ color: '#FF69B4' }} />
+                          <Typography variant="body2" sx={{ color: '#DB7093' }}>
                             {job.salary}
                           </Typography>
                         </Box>
                         <Box sx={{ mt: 2 }}>
-                          <Typography variant="body2" color="text.secondary" gutterBottom>
+                          <Typography variant="body2" sx={{ color: '#C71585', fontWeight: 'bold' }} gutterBottom>
                             Requirements:
                           </Typography>
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -274,13 +284,21 @@ function JobRecommendations() {
                                 key={idx}
                                 label={req}
                                 size="small"
-                                variant="outlined"
+                                sx={{
+                                  backgroundColor: '#FFE4E1',
+                                  color: '#C71585',
+                                  border: '1px solid #FFB6C1',
+                                  '&:hover': {
+                                    backgroundColor: '#FFB6C1',
+                                    color: '#FFFFFF',
+                                  }
+                                }}
                               />
                             ))}
                           </Box>
                         </Box>
                         <Box sx={{ mt: 2 }}>
-                          <Typography variant="body2" color="text.secondary" gutterBottom>
+                          <Typography variant="body2" sx={{ color: '#C71585', fontWeight: 'bold' }} gutterBottom>
                             Benefits:
                           </Typography>
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -289,13 +307,20 @@ function JobRecommendations() {
                                 key={idx}
                                 label={benefit}
                                 size="small"
-                                color="success"
-                                variant="outlined"
+                                sx={{
+                                  backgroundColor: '#FFF0F5',
+                                  color: '#C71585',
+                                  border: '1px solid #FFB6C1',
+                                  '&:hover': {
+                                    backgroundColor: '#FFB6C1',
+                                    color: '#FFFFFF',
+                                  }
+                                }}
                               />
                             ))}
                           </Box>
                         </Box>
-                        <Typography variant="body2" sx={{ mt: 2 }}>
+                        <Typography variant="body2" sx={{ mt: 2, color: '#DB7093' }}>
                           {job.description}
                         </Typography>
                       </Box>
