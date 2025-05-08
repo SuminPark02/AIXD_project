@@ -7,14 +7,20 @@ function Navbar() {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          구직 추천 시스템
+          Job Recommendation System
         </Typography>
         <Box>
           <Button color="inherit" component={RouterLink} to="/">
-            홈
+            Home
           </Button>
           <Button color="inherit" component={RouterLink} to="/profile">
-            프로필 작성
+            Profile
+          </Button>
+          <Button color="inherit" component={RouterLink} to="/recommendations">
+            Recommendations
+          </Button>
+          <Button color="inherit" component={RouterLink} to="/explainability">
+            Explainability
           </Button>
         </Box>
       </Toolbar>
