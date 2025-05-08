@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import UserProfile from './pages/UserProfile';
 import JobRecommendations from './pages/JobRecommendations';
+import Explainability from './pages/Explainability';
 
 const theme = createTheme({
   palette: {
@@ -95,6 +96,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/job-recommendations" element={<JobRecommendations />} />
+          <Route path="/explainability" element={<Explainability />} />
         </Routes>
       </Router>
     </ThemeProvider>

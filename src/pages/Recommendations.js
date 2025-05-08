@@ -14,6 +14,7 @@ import {
   Tooltip,
   Paper,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import {
   Work as WorkIcon,
   LocationOn as LocationIcon,
@@ -22,9 +23,11 @@ import {
   StarBorder as StarBorderIcon,
   Bookmark as BookmarkIcon,
   BookmarkBorder as BookmarkBorderIcon,
+  Info as InfoIcon,
 } from '@mui/icons-material';
 
 function Recommendations() {
+  const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
 
@@ -85,22 +88,36 @@ function Recommendations() {
       py: 8
     }}>
       <Container maxWidth="lg">
-        <Typography 
-          variant="h4" 
-          component="h1" 
-          gutterBottom 
-          align="center"
-          sx={{
-            background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-            backgroundClip: 'text',
-            textFillColor: 'transparent',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            mb: 6
-          }}
-        >
-          맞춤형 직업 추천
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 6 }}>
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{
+              background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+              backgroundClip: 'text',
+              textFillColor: 'transparent',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            맞춤형 직업 추천
+          </Typography>
+          <Button
+            variant="outlined"
+            startIcon={<InfoIcon />}
+            onClick={() => navigate('/explainability')}
+            sx={{
+              borderColor: '#2563eb',
+              color: '#2563eb',
+              '&:hover': {
+                borderColor: '#1d4ed8',
+                backgroundColor: 'rgba(37, 99, 235, 0.04)',
+              },
+            }}
+          >
+            추천 이유 보기
+          </Button>
+        </Box>
 
         <Grid container spacing={3}>
           {recommendations.map((job) => (
