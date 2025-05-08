@@ -1,20 +1,34 @@
-# Job Recommendation Site
+# AIXD Project - Job Recommendation System
 
-직업 추천 시스템 웹 애플리케이션입니다.
+## Live Demo
+Visit the deployed application at: [https://aixd-project.vercel.app/](https://aixd-project.vercel.app/)
 
-## 주요 기능
+## Features
+- AI-powered job recommendations
+- Profile management
+- Explainable AI recommendations
+- Responsive design
 
-- 사용자 프로필 기반 직업 추천
-- 맞춤형 구직 공고 제공
-- 직무별 상세 정보 제공
-
-## 기술 스택
-
+## Tech Stack
 - React
 - Material-UI
-- React Router
+- TensorFlow.js
+- Express.js
 
-## 시작하기
+## Getting Started
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
+
+## Project Structure
+- `/src/components` - Reusable UI components
+- `/src/pages` - Main application pages
+- `/src/context` - React context providers
+- `/src/utils` - Utility functions and AI model
+- `/src/data` - Sample data and mock responses
+
+## Contributing
+Feel free to submit issues and enhancement requests.
 
 ```bash
 # 의존성 설치
