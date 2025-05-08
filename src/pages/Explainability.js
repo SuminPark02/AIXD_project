@@ -21,39 +21,39 @@ import {
 function Explainability() {
   const explanations = [
     {
-      title: "기술 스택 매칭",
-      description: "귀하의 보유 기술과 요구되는 기술을 분석하여 최적의 매칭을 찾았습니다.",
+      title: "Skills Match",
+      description: "We've analyzed your skills against the job requirements to find the optimal match.",
       details: [
-        "React, TypeScript 경험이 요구사항과 높은 일치도를 보입니다.",
-        "Next.js 프레임워크 사용 경험이 우대사항과 일치합니다.",
-        "프론트엔드 개발 경험이 3년 이상으로 요구사항을 충족합니다."
+        "Your experience with React and TypeScript aligns well with the requirements.",
+        "Your Next.js framework experience matches the preferred qualifications.",
+        "Your 3+ years of frontend development experience meets the requirements."
       ]
     },
     {
-      title: "경력 적합성",
-      description: "귀하의 경력과 직무 요구사항을 비교 분석했습니다.",
+      title: "Career Fit",
+      description: "We've compared your career experience with the job requirements.",
       details: [
-        "시니어 레벨의 프로젝트 리딩 경험이 있습니다.",
-        "대규모 프로젝트 경험이 요구사항과 일치합니다.",
-        "팀 리더십 경험이 우대사항과 일치합니다."
+        "You have senior-level project leadership experience.",
+        "Your large-scale project experience matches the requirements.",
+        "Your team leadership experience aligns with the preferred qualifications."
       ]
     },
     {
-      title: "성장 가능성",
-      description: "귀하의 관심사와 회사의 발전 방향이 일치합니다.",
+      title: "Growth Potential",
+      description: "Your interests align with the company's development direction.",
       details: [
-        "클라우드 기술에 대한 관심이 회사의 기술 스택과 일치합니다.",
-        "마이크로서비스 아키텍처 경험이 향후 프로젝트에 도움이 될 것입니다.",
-        "성능 최적화 경험이 회사의 기술적 과제 해결에 기여할 수 있습니다."
+        "Your interest in cloud technologies matches the company's tech stack.",
+        "Your microservices architecture experience will be valuable for future projects.",
+        "Your performance optimization experience can contribute to solving technical challenges."
       ]
     },
     {
-      title: "문화 적합성",
-      description: "귀하의 가치관과 회사의 문화가 잘 맞습니다.",
+      title: "Cultural Fit",
+      description: "Your values align well with the company culture.",
       details: [
-        "협업 중심의 업무 스타일이 회사 문화와 일치합니다.",
-        "지속적인 학습과 성장에 대한 열정이 있습니다.",
-        "혁신적인 문제 해결 능력이 회사의 가치와 일치합니다."
+        "Your collaborative work style matches the company culture.",
+        "You show passion for continuous learning and growth.",
+        "Your innovative problem-solving abilities align with the company's values."
       ]
     }
   ];
@@ -79,7 +79,7 @@ function Explainability() {
             mb: 6
           }}
         >
-          추천 이유 설명
+          Recommendation Explanation
         </Typography>
 
         <Typography 
@@ -89,7 +89,7 @@ function Explainability() {
           paragraph
           sx={{ mb: 6 }}
         >
-          AI가 분석한 맞춤형 직업 추천의 상세한 이유를 확인해보세요
+          Explore the detailed reasons behind your personalized job recommendations
         </Typography>
 
         <Grid container spacing={4}>
@@ -142,9 +142,9 @@ function Explainability() {
 
         <Box sx={{ mt: 6, textAlign: 'center' }}>
           <Typography variant="body1" color="text.secondary">
-            이 추천은 귀하의 프로필과 수백 개의 채용 공고를 분석하여 도출된 결과입니다.
+            These recommendations are based on the analysis of your profile and hundreds of job postings.
             <br />
-            더 자세한 분석이나 다른 직무에 대한 추천이 필요하시다면 프로필을 업데이트해보세요.
+            Update your profile to get more detailed analysis or recommendations for different positions.
           </Typography>
         </Box>
       </Container>

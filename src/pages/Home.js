@@ -11,18 +11,18 @@ function Home() {
   const features = [
     {
       icon: <WorkIcon sx={{ fontSize: 40 }} />,
-      title: "맞춤형 직업 추천",
-      description: "당신의 경력과 기술을 분석하여 최적의 직업을 추천해드립니다."
+      title: "Personalized Job Recommendations",
+      description: "We analyze your career and skills to recommend the best job opportunities for you."
     },
     {
       icon: <SearchIcon sx={{ fontSize: 40 }} />,
-      title: "실시간 채용 정보",
-      description: "최신 구인구직 정보를 실시간으로 확인하실 수 있습니다."
+      title: "Real-time Job Listings",
+      description: "Access the latest job opportunities in real-time."
     },
     {
       icon: <TrendingUpIcon sx={{ fontSize: 40 }} />,
-      title: "커리어 성장",
-      description: "필요한 역량과 기술을 파악하여 커리어 성장을 도와드립니다."
+      title: "Career Growth",
+      description: "Identify required competencies and skills to help you grow in your career."
     }
   ];
 
@@ -51,7 +51,7 @@ function Home() {
               mb: 3
             }}
           >
-            당신의 꿈을 현실로
+            Turn Your Dreams Into Reality
           </Typography>
           <Typography 
             variant="h4" 
@@ -59,8 +59,8 @@ function Home() {
             paragraph
             sx={{ mb: 4 }}
           >
-            AI 기반 맞춤형 직업 추천 시스템으로<br />
-            당신에게 가장 적합한 기회를 찾아보세요
+            Find the perfect opportunity for you<br />
+            with our AI-powered job recommendation system
           </Typography>
           <Button
             variant="contained"
@@ -76,7 +76,7 @@ function Home() {
               }
             }}
           >
-            시작하기
+            Get Started
           </Button>
         </Box>
 

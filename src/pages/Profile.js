@@ -81,7 +81,7 @@ function Profile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 여기에 프로필 데이터 저장 로직 추가
+    // Add profile data saving logic here
     navigate('/recommendations');
   };
 
@@ -115,7 +115,7 @@ function Profile() {
               mb: 4
             }}
           >
-            프로필 작성
+            Create Your Profile
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -123,7 +123,7 @@ function Profile() {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="이름"
+                  label="Name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
@@ -141,7 +141,7 @@ function Profile() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  label="나이"
+                  label="Age"
                   name="age"
                   type="number"
                   value={formData.age}
@@ -152,17 +152,18 @@ function Profile() {
 
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth required>
-                  <InputLabel>학력</InputLabel>
+                  <InputLabel>Education</InputLabel>
                   <Select
                     name="education"
                     value={formData.education}
                     onChange={handleChange}
-                    label="학력"
+                    label="Education"
                   >
-                    <MenuItem value="고등학교">고등학교</MenuItem>
-                    <MenuItem value="전문대학">전문대학</MenuItem>
-                    <MenuItem value="대학교">대학교</MenuItem>
-                    <MenuItem value="대학원">대학원</MenuItem>
+                    <MenuItem value="High School">High School</MenuItem>
+                    <MenuItem value="Associate's Degree">Associate's Degree</MenuItem>
+                    <MenuItem value="Bachelor's Degree">Bachelor's Degree</MenuItem>
+                    <MenuItem value="Master's Degree">Master's Degree</MenuItem>
+                    <MenuItem value="Doctorate">Doctorate</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -170,27 +171,27 @@ function Profile() {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="경력"
+                  label="Experience"
                   name="experience"
                   value={formData.experience}
                   onChange={handleChange}
                   multiline
                   rows={3}
-                  placeholder="주요 경력 사항을 입력해주세요"
+                  placeholder="Enter your key work experience"
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <CodeIcon color="primary" /> 보유 기술
+                    <CodeIcon color="primary" /> Skills
                   </Typography>
                   <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
                     <TextField
                       size="small"
                       value={newSkill}
                       onChange={(e) => setNewSkill(e.target.value)}
-                      placeholder="기술 입력"
+                      placeholder="Enter skill"
                       sx={{ flexGrow: 1 }}
                     />
                     <Button
@@ -204,7 +205,7 @@ function Profile() {
                         }
                       }}
                     >
-                      추가
+                      Add
                     </Button>
                   </Stack>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
@@ -232,14 +233,14 @@ function Profile() {
               <Grid item xs={12}>
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <WorkIcon color="primary" /> 관심 분야
+                    <WorkIcon color="primary" /> Areas of Interest
                   </Typography>
                   <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
                     <TextField
                       size="small"
                       value={newInterest}
                       onChange={(e) => setNewInterest(e.target.value)}
-                      placeholder="관심 분야 입력"
+                      placeholder="Enter area of interest"
                       sx={{ flexGrow: 1 }}
                     />
                     <Button
@@ -253,7 +254,7 @@ function Profile() {
                         }
                       }}
                     >
-                      추가
+                      Add
                     </Button>
                   </Stack>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
@@ -279,24 +280,22 @@ function Profile() {
               </Grid>
 
               <Grid item xs={12}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    sx={{
-                      py: 1.5,
-                      px: 4,
-                      fontSize: '1.1rem',
-                      background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                      '&:hover': {
-                        background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
-                      }
-                    }}
-                  >
-                    추천 받기
-                  </Button>
-                </Box>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  sx={{
+                    mt: 2,
+                    py: 1.5,
+                    background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
+                    }
+                  }}
+                >
+                  Get Recommendations
+                </Button>
               </Grid>
             </Grid>
           </form>

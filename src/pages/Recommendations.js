@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -13,6 +13,10 @@ import {
   IconButton,
   Tooltip,
   Paper,
+  LinearProgress,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -25,45 +29,32 @@ import {
   BookmarkBorder as BookmarkBorderIcon,
   Info as InfoIcon,
 } from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { jobService } from '../services/jobService';
+import { useProfile } from '../contexts/ProfileContext';
 
-function Recommendations() {
+const Recommendations = () => {
   const navigate = useNavigate();
+  const { profile } = useProfile();
   const [favorites, setFavorites] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 임시 데이터
-  const recommendations = [
-    {
-      id: 1,
-      title: '시니어 프론트엔드 개발자',
-      company: '테크 컴퍼니',
-      location: '서울 강남구',
-      salary: '연봉 8,000만원 ~ 1억원',
-      description: 'React, TypeScript 경험이 풍부한 시니어 프론트엔드 개발자를 모집합니다.',
-      skills: ['React', 'TypeScript', 'Next.js'],
-      rating: 4.5,
-    },
-    {
-      id: 2,
-      title: '백엔드 개발자',
-      company: '스타트업',
-      location: '서울 서초구',
-      salary: '연봉 6,000만원 ~ 8,000만원',
-      description: 'Node.js와 Python을 활용한 백엔드 개발자를 모집합니다.',
-      skills: ['Node.js', 'Python', 'AWS'],
-      rating: 4.2,
-    },
-    {
-      id: 3,
-      title: '풀스택 개발자',
-      company: 'IT 기업',
-      location: '서울 마포구',
-      salary: '연봉 7,000만원 ~ 9,000만원',
-      description: '프론트엔드와 백엔드 개발이 가능한 풀스택 개발자를 모집합니다.',
-      skills: ['React', 'Node.js', 'MongoDB'],
-      rating: 4.0,
-    },
-  ];
+  useEffect(() => {
+    const loadRecommendations = async () => {
+      try {
+        const jobs = await jobService.getRecommendedJobs(profile);
+        setRecommendations(jobs);
+      } catch (error) {
+        console.error('Error loading recommendations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRecommendations();
+  }, [profile]);
 
   const toggleFavorite = (id) => {
     setFavorites((prev) =>
@@ -80,6 +71,14 @@ function Recommendations() {
         : [...prev, id]
     );
   };
+
+  if (loading) {
+    return (
+      <Container>
+        <LinearProgress />
+      </Container>
+    );
+  }
 
   return (
     <Box sx={{ 
@@ -100,7 +99,7 @@ function Recommendations() {
               WebkitTextFillColor: 'transparent',
             }}
           >
-            맞춤형 직업 추천
+            Personalized Job Recommendations
           </Typography>
           <Button
             variant="outlined"
@@ -115,13 +114,13 @@ function Recommendations() {
               },
             }}
           >
-            추천 이유 보기
+            View Recommendation Details
           </Button>
         </Box>
 
         <Grid container spacing={3}>
           {recommendations.map((job) => (
-            <Grid item xs={12} md={6} lg={4} key={job.id}>
+            <Grid item xs={12} key={job.id}>
               <Paper
                 elevation={0}
                 sx={{
@@ -143,12 +142,12 @@ function Recommendations() {
                       {job.title}
                     </Typography>
                     <Box>
-                      <Tooltip title={favorites.includes(job.id) ? "즐겨찾기 제거" : "즐겨찾기 추가"}>
+                      <Tooltip title={favorites.includes(job.id) ? "Remove from favorites" : "Add to favorites"}>
                         <IconButton onClick={() => toggleFavorite(job.id)} size="small">
                           {favorites.includes(job.id) ? <StarIcon color="warning" /> : <StarBorderIcon />}
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={bookmarks.includes(job.id) ? "북마크 제거" : "북마크 추가"}>
+                      <Tooltip title={bookmarks.includes(job.id) ? "Remove bookmark" : "Add bookmark"}>
                         <IconButton onClick={() => toggleBookmark(job.id)} size="small">
                           {bookmarks.includes(job.id) ? <BookmarkIcon color="primary" /> : <BookmarkBorderIcon />}
                         </IconButton>
@@ -203,6 +202,29 @@ function Recommendations() {
                       ({job.rating})
                     </Typography>
                   </Box>
+
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography>Why this job matches you</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {job.explanations.map((explanation, index) => (
+                        <Box key={index} mb={2}>
+                          <Typography variant="subtitle1" color="primary">
+                            {explanation.title}
+                          </Typography>
+                          <Typography variant="body2">
+                            {explanation.description}
+                          </Typography>
+                          <LinearProgress 
+                            variant="determinate" 
+                            value={explanation.score * 100} 
+                            style={{ marginTop: 8 }}
+                          />
+                        </Box>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
                 </CardContent>
 
                 <CardActions sx={{ p: 2, pt: 0 }}>
@@ -216,7 +238,7 @@ function Recommendations() {
                       }
                     }}
                   >
-                    지원하기
+                    Apply Now
                   </Button>
                 </CardActions>
               </Paper>
@@ -226,6 +248,6 @@ function Recommendations() {
       </Container>
     </Box>
   );
-}
+};
 
 export default Recommendations; 
