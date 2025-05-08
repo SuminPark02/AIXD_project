@@ -1,5 +1,5 @@
 {
-  "name": "job-recommendation-site",
+  "name": "job-recommend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
