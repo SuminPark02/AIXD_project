@@ -1,155 +1,280 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
   Box,
-  Paper,
+  Card,
+  CardContent,
   Grid,
+  Chip,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Paper,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
-  Divider,
+  ListItemIcon
 } from '@mui/material';
 import {
-  CheckCircle as CheckCircleIcon,
-  TrendingUp as TrendingUpIcon,
-  Psychology as PsychologyIcon,
-  EmojiObjects as EmojiObjectsIcon,
+  Work as WorkIcon,
+  School as SchoolIcon,
+  Business as BusinessIcon,
+  Star as StarIcon
 } from '@mui/icons-material';
+import { sampleProfiles } from '../data/sampleProfiles';
 
-function Explainability() {
-  const explanations = [
-    {
-      title: "Skills Match",
-      description: "We've analyzed your skills against the job requirements to find the optimal match.",
-      details: [
-        "Your experience with React and TypeScript aligns well with the requirements.",
-        "Your Next.js framework experience matches the preferred qualifications.",
-        "Your 3+ years of frontend development experience meets the requirements."
-      ]
-    },
-    {
-      title: "Career Fit",
-      description: "We've compared your career experience with the job requirements.",
-      details: [
-        "You have senior-level project leadership experience.",
-        "Your large-scale project experience matches the requirements.",
-        "Your team leadership experience aligns with the preferred qualifications."
-      ]
-    },
-    {
-      title: "Growth Potential",
-      description: "Your interests align with the company's development direction.",
-      details: [
-        "Your interest in cloud technologies matches the company's tech stack.",
-        "Your microservices architecture experience will be valuable for future projects.",
-        "Your performance optimization experience can contribute to solving technical challenges."
-      ]
-    },
-    {
-      title: "Cultural Fit",
-      description: "Your values align well with the company culture.",
-      details: [
-        "Your collaborative work style matches the company culture.",
-        "You show passion for continuous learning and growth.",
-        "Your innovative problem-solving abilities align with the company's values."
-      ]
-    }
-  ];
+const Explainability = () => {
+  const [selectedProfile, setSelectedProfile] = useState(sampleProfiles[0]);
+
+  const handleProfileChange = (event) => {
+    const profile = sampleProfiles.find(p => p.id === event.target.value);
+    setSelectedProfile(profile);
+  };
+
+  // Simulated AI explanation for job recommendations
+  const getAIExplanation = (profile) => {
+    return {
+      skillMatch: {
+        score: 85,
+        explanation: `Strong match with required technical skills. ${profile.skills.length} out of 4 key skills match the job requirements.`,
+        details: profile.skills.map(skill => ({
+          skill,
+          relevance: "High",
+          matchScore: 90
+        }))
+      },
+      experienceMatch: {
+        score: 90,
+        explanation: `${profile.yearsOfExperience} years of experience aligns well with the role requirements.`,
+        details: [
+          {
+            factor: "Years of Experience",
+            value: profile.yearsOfExperience,
+            relevance: "High"
+          },
+          {
+            factor: "Previous Companies",
+            value: profile.previousCompanies.join(", "),
+            relevance: "High"
+          }
+        ]
+      },
+      locationMatch: {
+        score: 100,
+        explanation: "Perfect location match with preferred work location.",
+        details: [
+          {
+            factor: "Preferred Location",
+            value: profile.preferredLocation,
+            relevance: "High"
+          }
+        ]
+      },
+      salaryMatch: {
+        score: 75,
+        explanation: "Salary expectations align with market rates for the role.",
+        details: [
+          {
+            factor: "Minimum Salary",
+            value: `$${profile.minSalary.toLocaleString()}`,
+            relevance: "Medium"
+          }
+        ]
+      }
+    };
+  };
+
+  const explanation = getAIExplanation(selectedProfile);
 
   return (
-    <Box sx={{ 
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
-      py: 8
-    }}>
-      <Container maxWidth="lg">
-        <Typography 
-          variant="h4" 
-          component="h1" 
-          gutterBottom 
-          align="center"
-          sx={{
-            background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-            backgroundClip: 'text',
-            textFillColor: 'transparent',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            mb: 6
-          }}
-        >
-          Recommendation Explanation
+    <Container maxWidth="lg">
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          AI Recommendation Explanation
         </Typography>
+        
+        <FormControl fullWidth sx={{ mb: 4 }}>
+          <InputLabel>Select Profile</InputLabel>
+          <Select
+            value={selectedProfile.id}
+            label="Select Profile"
+            onChange={handleProfileChange}
+          >
+            {sampleProfiles.map((profile) => (
+              <MenuItem key={profile.id} value={profile.id}>
+                {profile.name} - {profile.currentRole}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        <Typography 
-          variant="h6" 
-          align="center" 
-          color="text.secondary" 
-          paragraph
-          sx={{ mb: 6 }}
-        >
-          Explore the detailed reasons behind your personalized job recommendations
-        </Typography>
-
-        <Grid container spacing={4}>
-          {explanations.map((explanation, index) => (
-            <Grid item xs={12} md={6} key={index}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 4,
-                  height: '100%',
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                  },
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                  {index === 0 && <PsychologyIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />}
-                  {index === 1 && <TrendingUpIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />}
-                  {index === 2 && <EmojiObjectsIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />}
-                  {index === 3 && <CheckCircleIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />}
-                  <Typography variant="h5" component="h2">
-                    {explanation.title}
-                  </Typography>
-                </Box>
-
-                <Typography color="text.secondary" paragraph>
-                  {explanation.description}
+        <Grid container spacing={3}>
+          {/* Profile Information */}
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Profile Information
                 </Typography>
-
-                <Divider sx={{ my: 2 }} />
-
                 <List>
-                  {explanation.details.map((detail, detailIndex) => (
-                    <ListItem key={detailIndex} sx={{ py: 0.5 }}>
-                      <ListItemIcon sx={{ minWidth: 36 }}>
-                        <CheckCircleIcon color="primary" fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText primary={detail} />
-                    </ListItem>
-                  ))}
+                  <ListItem>
+                    <ListItemIcon>
+                      <WorkIcon />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="Current Role"
+                      secondary={selectedProfile.currentRole}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <SchoolIcon />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="Education"
+                      secondary={selectedProfile.education}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <BusinessIcon />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="Previous Companies"
+                      secondary={selectedProfile.previousCompanies.join(", ")}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <StarIcon />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="Skills"
+                      secondary={
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
+                          {selectedProfile.skills.map((skill) => (
+                            <Chip key={skill} label={skill} size="small" />
+                          ))}
+                        </Box>
+                      }
+                    />
+                  </ListItem>
                 </List>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <Box sx={{ mt: 6, textAlign: 'center' }}>
-          <Typography variant="body1" color="text.secondary">
-            These recommendations are based on the analysis of your profile and hundreds of job postings.
-            <br />
-            Update your profile to get more detailed analysis or recommendations for different positions.
-          </Typography>
-        </Box>
-      </Container>
-    </Box>
+          {/* AI Explanation */}
+          <Grid item xs={12} md={8}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  AI Recommendation Analysis
+                </Typography>
+                
+                {/* Skill Match */}
+                <Paper sx={{ p: 2, mb: 2, bgcolor: 'background.default' }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Skill Match ({explanation.skillMatch.score}%)
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {explanation.skillMatch.explanation}
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {explanation.skillMatch.details.map((detail) => (
+                      <Chip
+                        key={detail.skill}
+                        label={`${detail.skill} (${detail.matchScore}%)`}
+                        color="primary"
+                        variant="outlined"
+                      />
+                    ))}
+                  </Box>
+                </Paper>
+
+                {/* Experience Match */}
+                <Paper sx={{ p: 2, mb: 2, bgcolor: 'background.default' }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Experience Match ({explanation.experienceMatch.score}%)
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {explanation.experienceMatch.explanation}
+                  </Typography>
+                  <List dense>
+                    {explanation.experienceMatch.details.map((detail, index) => (
+                      <ListItem key={index}>
+                        <ListItemText
+                          primary={detail.factor}
+                          secondary={detail.value}
+                        />
+                        <Chip
+                          label={detail.relevance}
+                          size="small"
+                          color={detail.relevance === "High" ? "success" : "default"}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+
+                {/* Location Match */}
+                <Paper sx={{ p: 2, mb: 2, bgcolor: 'background.default' }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Location Match ({explanation.locationMatch.score}%)
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {explanation.locationMatch.explanation}
+                  </Typography>
+                  <List dense>
+                    {explanation.locationMatch.details.map((detail, index) => (
+                      <ListItem key={index}>
+                        <ListItemText
+                          primary={detail.factor}
+                          secondary={detail.value}
+                        />
+                        <Chip
+                          label={detail.relevance}
+                          size="small"
+                          color={detail.relevance === "High" ? "success" : "default"}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+
+                {/* Salary Match */}
+                <Paper sx={{ p: 2, bgcolor: 'background.default' }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Salary Match ({explanation.salaryMatch.score}%)
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {explanation.salaryMatch.explanation}
+                  </Typography>
+                  <List dense>
+                    {explanation.salaryMatch.details.map((detail, index) => (
+                      <ListItem key={index}>
+                        <ListItemText
+                          primary={detail.factor}
+                          secondary={detail.value}
+                        />
+                        <Chip
+                          label={detail.relevance}
+                          size="small"
+                          color={detail.relevance === "High" ? "success" : "default"}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
-}
+};
 
 export default Explainability; 
