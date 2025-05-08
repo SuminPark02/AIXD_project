@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import UserProfile from './pages/UserProfile';
 import JobRecommendations from './pages/JobRecommendations';
 import Explainability from './pages/Explainability';
+import { ProfileProvider } from './contexts/ProfileContext';
 
 const theme = createTheme({
   palette: {
@@ -90,15 +91,17 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/job-recommendations" element={<JobRecommendations />} />
-          <Route path="/explainability" element={<Explainability />} />
-        </Routes>
-      </Router>
+      <ProfileProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/job-recommendations" element={<JobRecommendations />} />
+            <Route path="/explainability" element={<Explainability />} />
+          </Routes>
+        </Router>
+      </ProfileProvider>
     </ThemeProvider>
   );
 }
