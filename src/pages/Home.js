@@ -1,46 +1,34 @@
 import React from 'react';
-import { Container, Typography, Button, Box, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import WorkIcon from '@mui/icons-material/Work';
-import SearchIcon from '@mui/icons-material/Search';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import {
+  Container,
+  Typography,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+  Box,
+} from '@mui/material';
+import {
+  Work as WorkIcon,
+  Person as PersonIcon,
+  Lightbulb as LightbulbIcon,
+} from '@mui/icons-material';
 
-function Home() {
+const Home = () => {
   const navigate = useNavigate();
-
-  const features = [
-    {
-      icon: <WorkIcon sx={{ fontSize: 40 }} />,
-      title: "Personalized Job Recommendations",
-      description: "We analyze your career and skills to recommend the best job opportunities for you."
-    },
-    {
-      icon: <SearchIcon sx={{ fontSize: 40 }} />,
-      title: "Real-time Job Listings",
-      description: "Access the latest job opportunities in real-time."
-    },
-    {
-      icon: <TrendingUpIcon sx={{ fontSize: 40 }} />,
-      title: "Career Growth",
-      description: "Identify required competencies and skills to help you grow in your career."
-    }
-  ];
 
   return (
     <Box sx={{ 
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
-      pt: 8,
-      pb: 12
+      py: 8
     }}>
       <Container maxWidth="lg">
-        <Box sx={{ 
-          textAlign: 'center',
-          mb: 8
-        }}>
-          <Typography 
-            variant="h1" 
-            component="h1" 
+        <Box sx={{ textAlign: 'center', mb: 8 }}>
+          <Typography
+            variant="h2"
+            component="h1"
             gutterBottom
             sx={{
               background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
@@ -48,29 +36,25 @@ function Home() {
               textFillColor: 'transparent',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              mb: 3
+              fontWeight: 'bold',
+              mb: 2
             }}
           >
-            Turn Your Dreams Into Reality
+            Find Your Dream Job
           </Typography>
-          <Typography 
-            variant="h4" 
-            color="text.secondary" 
-            paragraph
-            sx={{ mb: 4 }}
-          >
-            Find the perfect opportunity for you<br />
-            with our AI-powered job recommendation system
+          <Typography variant="h5" color="text.secondary" paragraph>
+            Get personalized job recommendations based on your skills and preferences
           </Typography>
           <Button
             variant="contained"
             size="large"
             onClick={() => navigate('/profile')}
             sx={{
-              py: 2,
-              px: 4,
-              fontSize: '1.1rem',
               background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+              color: 'white',
+              px: 4,
+              py: 1.5,
+              fontSize: '1.1rem',
               '&:hover': {
                 background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
               }
@@ -80,51 +64,85 @@ function Home() {
           </Button>
         </Box>
 
-        <Grid container spacing={4}>
-          {features.map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 4,
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  background: 'rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                }}
-              >
-                <Box
-                  sx={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mb: 2,
-                    background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                    color: 'white',
-                  }}
-                >
-                  {feature.icon}
-                </Box>
+        <Grid container spacing={4} sx={{ mt: 4 }}>
+          <Grid item xs={12} md={4}>
+            <Card sx={{ 
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              transition: 'transform 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+              }
+            }}>
+              <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
+                <WorkIcon sx={{ fontSize: 60, color: '#2563eb', mb: 2 }} />
                 <Typography variant="h5" component="h2" gutterBottom>
-                  {feature.title}
+                  Smart Recommendations
                 </Typography>
                 <Typography color="text.secondary">
-                  {feature.description}
+                  Get personalized job recommendations based on your skills, experience, and preferences
                 </Typography>
-              </Paper>
-            </Grid>
-          ))}
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Card sx={{ 
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              transition: 'transform 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+              }
+            }}>
+              <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
+                <PersonIcon sx={{ fontSize: 60, color: '#2563eb', mb: 2 }} />
+                <Typography variant="h5" component="h2" gutterBottom>
+                  Personalized Profile
+                </Typography>
+                <Typography color="text.secondary">
+                  Create your profile and let our AI understand your career goals and preferences
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Card sx={{ 
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              transition: 'transform 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+              }
+            }}>
+              <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
+                <LightbulbIcon sx={{ fontSize: 60, color: '#2563eb', mb: 2 }} />
+                <Typography variant="h5" component="h2" gutterBottom>
+                  Explainable AI
+                </Typography>
+                <Typography color="text.secondary">
+                  Understand why each job is recommended to you with our explainable AI system
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
       </Container>
     </Box>
   );
-}
+};
 
 export default Home; 

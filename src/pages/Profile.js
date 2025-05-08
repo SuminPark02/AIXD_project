@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -6,82 +7,55 @@ import {
   Button,
   Box,
   Paper,
-  Grid,
+  Chip,
+  Autocomplete,
+  Slider,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Chip,
-  Stack,
-  IconButton,
-  Tooltip,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SchoolIcon from '@mui/icons-material/School';
-import WorkIcon from '@mui/icons-material/Work';
-import CodeIcon from '@mui/icons-material/Code';
+import { useProfile } from '../contexts/ProfileContext';
 
-function Profile() {
+const skills = [
+  'React', 'TypeScript', 'JavaScript', 'Python', 'Java', 'Node.js', 'AWS',
+  'Docker', 'Kubernetes', 'SQL', 'MongoDB', 'GraphQL', 'REST', 'CI/CD', 'Git',
+  'Angular', 'Vue.js', 'PHP', 'Ruby', 'Go', 'C#', '.NET', 'Spring Boot',
+  'TensorFlow', 'PyTorch', 'Data Analysis', 'Machine Learning', 'Deep Learning',
+  'Cloud Computing', 'Microservices', 'System Design', 'Agile', 'Scrum'
+];
+
+const locations = [
+  'San Francisco, CA', 'New York, NY', 'Seattle, WA', 'Austin, TX', 'Boston, MA',
+  'Chicago, IL', 'Denver, CO', 'Los Angeles, CA', 'Portland, OR', 'Washington, DC',
+  'Atlanta, GA', 'Dallas, TX', 'Miami, FL', 'Phoenix, AZ', 'San Diego, CA'
+];
+
+const experienceLevels = [
+  'Entry Level',
+  'Junior',
+  'Mid Level',
+  'Senior',
+  'Lead',
+  'Manager',
+  'Director',
+  'Executive'
+];
+
+const Profile = () => {
   const navigate = useNavigate();
+  const { profile, updateProfile } = useProfile();
   const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    education: '',
-    experience: '',
-    skills: [],
-    interests: [],
+    name: profile?.name || '',
+    skills: profile?.skills || [],
+    experience: profile?.experience || 'Mid Level',
+    preferredLocation: profile?.preferredLocation || '',
+    minSalary: profile?.minSalary || 50000,
   });
-
-  const [newSkill, setNewSkill] = useState('');
-  const [newInterest, setNewInterest] = useState('');
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleAddSkill = () => {
-    if (newSkill && !formData.skills.includes(newSkill)) {
-      setFormData((prev) => ({
-        ...prev,
-        skills: [...prev.skills, newSkill],
-      }));
-      setNewSkill('');
-    }
-  };
-
-  const handleDeleteSkill = (skillToDelete) => {
-    setFormData((prev) => ({
-      ...prev,
-      skills: prev.skills.filter((skill) => skill !== skillToDelete),
-    }));
-  };
-
-  const handleAddInterest = () => {
-    if (newInterest && !formData.interests.includes(newInterest)) {
-      setFormData((prev) => ({
-        ...prev,
-        interests: [...prev.interests, newInterest],
-      }));
-      setNewInterest('');
-    }
-  };
-
-  const handleDeleteInterest = (interestToDelete) => {
-    setFormData((prev) => ({
-      ...prev,
-      interests: prev.interests.filter((interest) => interest !== interestToDelete),
-    }));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add profile data saving logic here
+    updateProfile(formData);
     navigate('/recommendations');
   };
 
@@ -104,14 +78,14 @@ function Profile() {
           <Typography 
             variant="h4" 
             component="h1" 
-            gutterBottom 
-            align="center"
+            gutterBottom
             sx={{
               background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
               backgroundClip: 'text',
               textFillColor: 'transparent',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
+              textAlign: 'center',
               mb: 4
             }}
           >
@@ -119,190 +93,109 @@ function Profile() {
           </Typography>
 
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      '&:hover fieldset': {
-                        borderColor: '#2563eb',
-                      },
-                    },
-                  }}
-                />
-              </Grid>
+            <TextField
+              fullWidth
+              label="Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              margin="normal"
+              required
+            />
 
-              <Grid item xs={12} sm={6}>
+            <Autocomplete
+              multiple
+              options={skills}
+              value={formData.skills}
+              onChange={(_, newValue) => setFormData({ ...formData, skills: newValue })}
+              renderInput={(params) => (
                 <TextField
-                  fullWidth
-                  label="Age"
-                  name="age"
-                  type="number"
-                  value={formData.age}
-                  onChange={handleChange}
+                  {...params}
+                  label="Skills"
+                  margin="normal"
                   required
                 />
-              </Grid>
+              )}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    label={option}
+                    {...getTagProps({ index })}
+                    sx={{
+                      background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+                      color: 'white',
+                    }}
+                  />
+                ))
+              }
+            />
 
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth required>
-                  <InputLabel>Education</InputLabel>
-                  <Select
-                    name="education"
-                    value={formData.education}
-                    onChange={handleChange}
-                    label="Education"
-                  >
-                    <MenuItem value="High School">High School</MenuItem>
-                    <MenuItem value="Associate's Degree">Associate's Degree</MenuItem>
-                    <MenuItem value="Bachelor's Degree">Bachelor's Degree</MenuItem>
-                    <MenuItem value="Master's Degree">Master's Degree</MenuItem>
-                    <MenuItem value="Doctorate">Doctorate</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Experience Level</InputLabel>
+              <Select
+                value={formData.experience}
+                label="Experience Level"
+                onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+                required
+              >
+                {experienceLevels.map((level) => (
+                  <MenuItem key={level} value={level}>
+                    {level}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-              <Grid item xs={12}>
+            <Autocomplete
+              options={locations}
+              value={formData.preferredLocation}
+              onChange={(_, newValue) => setFormData({ ...formData, preferredLocation: newValue })}
+              renderInput={(params) => (
                 <TextField
-                  fullWidth
-                  label="Experience"
-                  name="experience"
-                  value={formData.experience}
-                  onChange={handleChange}
-                  multiline
-                  rows={3}
-                  placeholder="Enter your key work experience"
+                  {...params}
+                  label="Preferred Location"
+                  margin="normal"
+                  required
                 />
-              </Grid>
+              )}
+            />
 
-              <Grid item xs={12}>
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <CodeIcon color="primary" /> Skills
-                  </Typography>
-                  <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                    <TextField
-                      size="small"
-                      value={newSkill}
-                      onChange={(e) => setNewSkill(e.target.value)}
-                      placeholder="Enter skill"
-                      sx={{ flexGrow: 1 }}
-                    />
-                    <Button
-                      variant="contained"
-                      onClick={handleAddSkill}
-                      startIcon={<AddIcon />}
-                      sx={{
-                        background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                        '&:hover': {
-                          background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
-                        }
-                      }}
-                    >
-                      Add
-                    </Button>
-                  </Stack>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    {formData.skills.map((skill) => (
-                      <Chip
-                        key={skill}
-                        label={skill}
-                        onDelete={() => handleDeleteSkill(skill)}
-                        sx={{
-                          background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                          color: 'white',
-                          '& .MuiChip-deleteIcon': {
-                            color: 'white',
-                            '&:hover': {
-                              color: '#e0f2fe',
-                            },
-                          },
-                        }}
-                      />
-                    ))}
-                  </Box>
-                </Box>
-              </Grid>
+            <Box sx={{ mt: 3, mb: 2 }}>
+              <Typography gutterBottom>
+                Minimum Salary: ${formData.minSalary.toLocaleString()}
+              </Typography>
+              <Slider
+                value={formData.minSalary}
+                onChange={(_, value) => setFormData({ ...formData, minSalary: value })}
+                min={30000}
+                max={200000}
+                step={10000}
+                valueLabelDisplay="auto"
+                valueLabelFormat={(value) => `$${value.toLocaleString()}`}
+              />
+            </Box>
 
-              <Grid item xs={12}>
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <WorkIcon color="primary" /> Areas of Interest
-                  </Typography>
-                  <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                    <TextField
-                      size="small"
-                      value={newInterest}
-                      onChange={(e) => setNewInterest(e.target.value)}
-                      placeholder="Enter area of interest"
-                      sx={{ flexGrow: 1 }}
-                    />
-                    <Button
-                      variant="contained"
-                      onClick={handleAddInterest}
-                      startIcon={<AddIcon />}
-                      sx={{
-                        background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                        '&:hover': {
-                          background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
-                        }
-                      }}
-                    >
-                      Add
-                    </Button>
-                  </Stack>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    {formData.interests.map((interest) => (
-                      <Chip
-                        key={interest}
-                        label={interest}
-                        onDelete={() => handleDeleteInterest(interest)}
-                        sx={{
-                          background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                          color: 'white',
-                          '& .MuiChip-deleteIcon': {
-                            color: 'white',
-                            '&:hover': {
-                              color: '#e0f2fe',
-                            },
-                          },
-                        }}
-                      />
-                    ))}
-                  </Box>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  size="large"
-                  sx={{
-                    mt: 2,
-                    py: 1.5,
-                    background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
-                    '&:hover': {
-                      background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
-                    }
-                  }}
-                >
-                  Get Recommendations
-                </Button>
-              </Grid>
-            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              sx={{
+                mt: 3,
+                background: 'linear-gradient(45deg, #2563eb 30%, #7c3aed 90%)',
+                color: 'white',
+                py: 1.5,
+                '&:hover': {
+                  background: 'linear-gradient(45deg, #1d4ed8 30%, #5b21b6 90%)',
+                }
+              }}
+            >
+              Get Recommendations
+            </Button>
           </form>
         </Paper>
       </Container>
     </Box>
   );
-}
+};
 
 export default Profile; 
